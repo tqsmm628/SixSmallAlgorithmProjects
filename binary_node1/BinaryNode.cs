@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace binary_node1;
 
 public class BinaryNode<T>(T value)
@@ -12,7 +10,6 @@ public class BinaryNode<T>(T value)
     public void AddRight(BinaryNode<T> rightChild) => RightChild = rightChild;
 
     public override string ToString() => ToString("");
-
     private string ToString(string spaces)
     {
         var self = spaces + Value + ":";

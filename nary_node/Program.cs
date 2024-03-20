@@ -22,13 +22,32 @@ c.AddChild(f);
 f.AddChild(h);
 f.AddChild(i);
 
-Console.WriteLine(root);
-// Console.WriteLine(a);
-// Console.WriteLine(b);
-// Console.WriteLine(c);
-// Console.WriteLine(d);
-// Console.WriteLine(e);
-// Console.WriteLine(f);
-// Console.WriteLine(g);
-// Console.WriteLine(h);
-// Console.WriteLine(i);
+// Find some values.
+FindValue(root, "Root");
+FindValue(root, "E");
+FindValue(root, "F");
+FindValue(root, "Q");
+
+// Find F in the C subtree.
+FindValue(c, "F");
+
+return;
+
+void FindValue<T>(NaryNode<T> node, T targetValue)
+{
+    Console.WriteLine(
+        FindNode(node) is null 
+            ? $"Value {targetValue} not found" 
+            : $"Found {targetValue}"
+    );
+    return;
+
+    NaryNode<T>? FindNode(NaryNode<T>? current)
+    {
+        if (current is null) return null;
+        if (Equals(current.Value, targetValue)) return current;
+        return current.Children
+            .Select(FindNode)
+            .FirstOrDefault(found => found is not null);
+    }
+}
