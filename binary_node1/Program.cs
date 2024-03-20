@@ -16,11 +16,11 @@ b.AddRight(e);
 e.AddLeft(f);
 
 Console.WriteLine(root);
-Console.WriteLine(a);
-Console.WriteLine(b);
-Console.WriteLine(c);
-Console.WriteLine(d);
-Console.WriteLine(e);
-Console.WriteLine(f);
+// Console.WriteLine(a);
+// Console.WriteLine(b);
+// Console.WriteLine(c);
+// Console.WriteLine(d);
+// Console.WriteLine(e);
+// Console.WriteLine(f);
 
 

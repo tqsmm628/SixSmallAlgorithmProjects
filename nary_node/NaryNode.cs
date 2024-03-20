@@ -10,9 +10,12 @@ public class NaryNode<T>(T value)
         Children.Add(child);
     }
 
-    public override string ToString()
+    public override string ToString() => ToString("");
+
+    private string ToString(string spaces)
     {
-        var childValues = Children.Select(c => c.Value);
-        return $"{Value}: {string.Join(" ", childValues)}";
+        var result = new List<string>{ $"{spaces}{Value}:" };
+        result.AddRange(Children.Select(child => child.ToString(spaces + "  ")));
+        return string.Join(Environment.NewLine, result);
     }
 }
