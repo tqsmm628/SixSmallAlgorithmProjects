@@ -36,18 +36,8 @@ return;
 void FindValue<T>(NaryNode<T> node, T targetValue)
 {
     Console.WriteLine(
-        FindNode(node) is null 
+        node.FindNode(targetValue) is null 
             ? $"Value {targetValue} not found" 
             : $"Found {targetValue}"
     );
-    return;
-
-    NaryNode<T>? FindNode(NaryNode<T>? current)
-    {
-        if (current is null) return null;
-        if (Equals(current.Value, targetValue)) return current;
-        return current.Children
-            .Select(FindNode)
-            .FirstOrDefault(found => found is not null);
-    }
 }

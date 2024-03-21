@@ -26,24 +26,11 @@ FindValue(b, "F");
 
 return;
 
-void FindValue<T>(BinaryNode<T>? node, T targetValue)
+void FindValue<T>(BinaryNode<T> node, T targetValue)
 {
     Console.WriteLine(
-        FindNode(node) is null 
+        node.FindNode(targetValue) is null 
             ? $"Value {targetValue} not found" 
             : $"Found {targetValue}"
     );
-    return;
-
-    BinaryNode<T>? FindNode(BinaryNode<T>? current)
-    {
-        if (current is null) return null;
-        if (Equals(current.Value, targetValue)) return current;
-        if (FindNode(current.LeftChild) is {} leftResult)
-            return leftResult;
-        if (FindNode(current.RightChild) is {} rightResult)
-            return rightResult;
-        
-        return null;
-    }
 }

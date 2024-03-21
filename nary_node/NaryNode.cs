@@ -18,4 +18,12 @@ public class NaryNode<T>(T value)
         result.AddRange(Children.Select(child => child.ToString(spaces + "  ")));
         return string.Join(Environment.NewLine, result);
     }
+
+    public NaryNode<T>? FindNode(T targetValue)
+    {
+        if (Equals(Value, targetValue)) return this;
+        return Children
+            .Select(child => child.FindNode(targetValue))
+            .FirstOrDefault(found => found is not null);
+    }
 }
