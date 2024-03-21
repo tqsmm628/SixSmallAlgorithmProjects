@@ -15,22 +15,8 @@ a.AddRight(d);
 b.AddRight(e);
 e.AddLeft(f);
 
-// Find some values.
-FindValue(root, "Root");
-FindValue(root, "E");
-FindValue(root, "F");
-FindValue(root, "Q");
 
-// Find F in the B subtree.
-FindValue(b, "F");
-
-return;
-
-void FindValue<T>(BinaryNode<T> node, T targetValue)
+foreach (var node in root.TraverseBreadthFirst())
 {
-    Console.WriteLine(
-        node.FindNode(targetValue) is null 
-            ? $"Value {targetValue} not found" 
-            : $"Found {targetValue}"
-    );
+    Console.Write(node.Value + " ");
 }

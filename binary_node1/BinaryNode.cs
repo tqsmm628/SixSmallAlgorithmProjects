@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace binary_node1;
 
 public class BinaryNode<T>(T value)
@@ -30,5 +32,46 @@ public class BinaryNode<T>(T value)
             return rightResult;
         
         return null;
+    }
+
+    public IEnumerable<BinaryNode<T>> TraversePreorder() => Traverse("Preorder");
+    public IEnumerable<BinaryNode<T>> TraverseInorder() => Traverse("Inorder");
+    public IEnumerable<BinaryNode<T>> TraversePostorder() => Traverse("Postorder");
+
+    private IEnumerable<BinaryNode<T>> Traverse(string order)
+    {
+        if (order == "Preorder") yield return this;
+
+        if (_leftChild != null)
+        {
+            foreach (var node in _leftChild.Traverse(order))
+            {
+                yield return node;
+            }
+        }
+
+        if (order == "Inorder") yield return this;
+
+        if (_rightChild != null)
+        {
+            foreach (var node in _rightChild.Traverse(order))
+            {
+                yield return node;
+            }
+        }
+
+        if (order == "Postorder") yield return this;
+    }
+
+    public IEnumerable<BinaryNode<T>> TraverseBreadthFirst()
+    {
+        var queue = new Queue<BinaryNode<T>>();
+        queue.Enqueue(this);
+        while (queue.TryDequeue(out var item))
+        {
+            yield return item;
+            if (item._leftChild is { } left) queue.Enqueue(left);
+            if (item._rightChild is { } right) queue.Enqueue(right);
+        }
     }
 }

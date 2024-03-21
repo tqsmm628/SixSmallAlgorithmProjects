@@ -22,22 +22,7 @@ c.AddChild(f);
 f.AddChild(h);
 f.AddChild(i);
 
-// Find some values.
-FindValue(root, "Root");
-FindValue(root, "E");
-FindValue(root, "F");
-FindValue(root, "Q");
-
-// Find F in the C subtree.
-FindValue(c, "F");
-
-return;
-
-void FindValue<T>(NaryNode<T> node, T targetValue)
+foreach (var node in root.TraverseBreadthFirst())
 {
-    Console.WriteLine(
-        node.FindNode(targetValue) is null 
-            ? $"Value {targetValue} not found" 
-            : $"Found {targetValue}"
-    );
+    Console.Write(node.Value + " ");
 }
