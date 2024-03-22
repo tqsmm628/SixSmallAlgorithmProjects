@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace binary_node1;
 
 public class BinaryNode<T>(T value)
