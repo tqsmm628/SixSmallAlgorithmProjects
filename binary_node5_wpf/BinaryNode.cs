@@ -138,20 +138,20 @@ namespace binary_node5
 
         private void ArrangeSubtree(double xmin, double ymin)
         {
+            var boundPoint = new Point(xmin, ymin);
             if (LeftChild is null && RightChild is null)
             {
                 Center = new Point(xmin + NODE_RADIUS, ymin + NODE_RADIUS);
-                SubtreeBounds = new Rect(new Point(xmin, ymin), new Size(NODE_RADIUS * 2, NODE_RADIUS * 2));
+                SubtreeBounds = new Rect(boundPoint, new Size(NODE_RADIUS * 2, NODE_RADIUS * 2));
                 return;
             }
 
             if (LeftChild is null || RightChild is null)
             {
-                var child = LeftChild ?? RightChild;
-                child!.ArrangeSubtree(xmin, ymin + Y_SPACING);
+                var child = LeftChild ?? RightChild!;
+                child.ArrangeSubtree(xmin, ymin + Y_SPACING);
                 Center = new Point(child.Center.X, ymin + NODE_RADIUS);
-                SubtreeBounds = new Rect(
-                    new Point(xmin, ymin),
+                SubtreeBounds = new Rect(boundPoint,
                     new Size(
                         child.SubtreeBounds.Width,
                         child.SubtreeBounds.Height + Y_SPACING
@@ -167,8 +167,7 @@ namespace binary_node5
                 (LeftChild.Center.X + RightChild.Center.X) / 2,
                 ymin + NODE_RADIUS
             );
-            SubtreeBounds = new Rect(
-                new Point(xmin, ymin),
+            SubtreeBounds = new Rect(boundPoint,
                 new Size(
                     RightChild.SubtreeBounds.Right - LeftChild.SubtreeBounds.Left,
                     Math.Max(LeftChild.SubtreeBounds.Height, RightChild.SubtreeBounds.Height) + Y_SPACING

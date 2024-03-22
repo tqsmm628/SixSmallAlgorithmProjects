@@ -25,17 +25,17 @@ namespace nary_node5
             //    |        |
             //    +      +-+-+
             // H      I J K
-            NaryNode<string> node_a = new NaryNode<string>("A");
-            NaryNode<string> node_b = new NaryNode<string>("B");
-            NaryNode<string> node_c = new NaryNode<string>("C");
-            NaryNode<string> node_d = new NaryNode<string>("D");
-            NaryNode<string> node_e = new NaryNode<string>("E");
-            NaryNode<string> node_f = new NaryNode<string>("F");
-            NaryNode<string> node_g = new NaryNode<string>("G");
-            NaryNode<string> node_h = new NaryNode<string>("H");
-            NaryNode<string> node_i = new NaryNode<string>("I");
-            NaryNode<string> node_j = new NaryNode<string>("J");
-            NaryNode<string> node_k = new NaryNode<string>("K");
+            var node_a = new NaryNode<string>("A");
+            var node_b = new NaryNode<string>("B");
+            var node_c = new NaryNode<string>("C");
+            var node_d = new NaryNode<string>("D");
+            var node_e = new NaryNode<string>("E");
+            var node_f = new NaryNode<string>("F");
+            var node_g = new NaryNode<string>("G");
+            var node_h = new NaryNode<string>("H");
+            var node_i = new NaryNode<string>("I");
+            var node_j = new NaryNode<string>("J");
+            var node_k = new NaryNode<string>("K");
 
             node_a.AddChild(node_b);
             node_a.AddChild(node_c);
@@ -49,7 +49,7 @@ namespace nary_node5
             node_g.AddChild(node_k);
 
             // Draw the tree.
-            
+            node_a.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
         }
     }
 }

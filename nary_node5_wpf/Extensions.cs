@@ -94,5 +94,9 @@ namespace nary_node5
         }
 
         #endregion Set Shape Properties
+        
+        
+        public static Point Move(this Point p, double x = 0, double y = 0) => 
+            new Point(p.X + x, p.Y + y);
     }
 }

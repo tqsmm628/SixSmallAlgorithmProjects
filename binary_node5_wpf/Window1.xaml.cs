@@ -50,7 +50,7 @@ namespace binary_node5
             node_j.AddRight(node_l);
 
             // Arrange and draw the tree.
-            var margin = 20;
+            var margin = 10;
             node_a.ArrangeAndDrawSubtree(mainCanvas, margin, margin);
             // Width = node_a.SubtreeBounds.Width + margin * 2 + 
             //         SystemParameters.BorderWidth * 2 +
