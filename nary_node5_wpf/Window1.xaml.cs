@@ -25,31 +25,63 @@ namespace nary_node5
             //    |        |
             //    +      +-+-+
             // H      I J K
-            var node_a = new NaryNode<string>("A");
-            var node_b = new NaryNode<string>("B");
-            var node_c = new NaryNode<string>("C");
-            var node_d = new NaryNode<string>("D");
-            var node_e = new NaryNode<string>("E");
-            var node_f = new NaryNode<string>("F");
-            var node_g = new NaryNode<string>("G");
-            var node_h = new NaryNode<string>("H");
-            var node_i = new NaryNode<string>("I");
-            var node_j = new NaryNode<string>("J");
-            var node_k = new NaryNode<string>("K");
+            var GeneriGloop = new NaryNode<string>("GeneriGloop");
+            var RD = new NaryNode<string>("R & D");
+            var Sales = new NaryNode<string>("Sales");
+            var ProfessionalServices = new NaryNode<string>("Professional Services");
+            var Applied = new NaryNode<string>("Applied");
+            var Basic = new NaryNode<string>("Basic");
+            var Advanced = new NaryNode<string>("Advanced");
+            var SciFi = new NaryNode<string>("Sci Fi");
+            var InsideSales = new NaryNode<string>("Inside Sales");
+            var OutsideSales = new NaryNode<string>("Outside Sales");
+            var B2B = new NaryNode<string>("B2B");
+            var Consumer = new NaryNode<string>("Consumer");
+            var AccountManagement = new NaryNode<string>("Account Mangement");
+            var HR = new NaryNode<string>("HR");
+            var Accounting = new NaryNode<string>("Accounting");
+            var Legal = new NaryNode<string>("Legal");
+            var Training = new NaryNode<string>("Training");
+            var Hiring = new NaryNode<string>("Hiring");
+            var Equity = new NaryNode<string>("Equity");
+            var Discipline = new NaryNode<string>("Discipline");
+            var Payroll = new NaryNode<string>("Payroll");
+            var Billing = new NaryNode<string>("Billing");
+            var Reporting = new NaryNode<string>("Reporting");
+            var Opacity = new NaryNode<string>("Opacity");
+            var Compliance = new NaryNode<string>("Compliance");
+            var ProgressPrevention = new NaryNode<string>("Progress Prevention");
+            var BailServices = new NaryNode<string>("Bail Services");
 
-            node_a.AddChild(node_b);
-            node_a.AddChild(node_c);
-            node_a.AddChild(node_d);
-            node_b.AddChild(node_e);
-            node_b.AddChild(node_f);
-            node_d.AddChild(node_g);
-            node_e.AddChild(node_h);
-            node_g.AddChild(node_i);
-            node_g.AddChild(node_j);
-            node_g.AddChild(node_k);
+            GeneriGloop.AddChild(RD);
+            GeneriGloop.AddChild(Sales);
+            GeneriGloop.AddChild(ProfessionalServices);
+            RD.AddChild(Applied);
+            RD.AddChild(Basic);
+            RD.AddChild(Advanced);
+            RD.AddChild(SciFi);
+            Sales.AddChild(InsideSales);
+            Sales.AddChild(OutsideSales);
+            Sales.AddChild(B2B);
+            Sales.AddChild(Consumer);
+            Sales.AddChild(AccountManagement);
+            ProfessionalServices.AddChild(HR);
+            ProfessionalServices.AddChild(Accounting);
+            ProfessionalServices.AddChild(Legal);
+            HR.AddChild(Training);
+            HR.AddChild(Hiring);
+            HR.AddChild(Equity);
+            HR.AddChild(Discipline);
+            Accounting.AddChild(Payroll);
+            Accounting.AddChild(Billing);
+            Accounting.AddChild(Reporting);
+            Accounting.AddChild(Opacity);
+            Legal.AddChild(Compliance);
+            Legal.AddChild(ProgressPrevention);
+            Legal.AddChild(BailServices);
 
             // Draw the tree.
-            node_a.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
+            GeneriGloop.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
         }
     }
 }

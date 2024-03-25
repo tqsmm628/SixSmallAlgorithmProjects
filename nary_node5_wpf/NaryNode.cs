@@ -80,12 +80,18 @@ namespace nary_node5
 
             return result;
         }
+        
+        private bool IsLeaf => Children.Count == 0;
+        private bool IsTwig => Children.All(o => o.IsLeaf);
 
         private const double
-            NODE_RADIUS = 18,
-            FONT_SIZE = 16,
-            X_SPACING = 30,
-            Y_SPACING = 60;
+            //NODE_RADIUS = 18,
+            FONT_SIZE = 10,
+            X_SPACING = 10,
+            Y_SPACING = 60,
+            BOX_HALF_WIDTH = 80 / 2,
+            BOX_HALF_HEIGHT = 40 / 2,
+            TWIG_OFFSET = 24;
 
         public Point Center { get; private set; }
         public Rect SubtreeBounds { get; private set; }
@@ -102,11 +108,33 @@ namespace nary_node5
             var boundPoint = new Point(xmin, ymin);
             if (Children.Count == 0)
             {
-                Center = new Point(xmin + NODE_RADIUS, ymin + NODE_RADIUS);
-                SubtreeBounds = new Rect(boundPoint, new Size(NODE_RADIUS * 2, NODE_RADIUS * 2));
+                Center = new Point(xmin + BOX_HALF_WIDTH, ymin + BOX_HALF_HEIGHT);
+                SubtreeBounds = new Rect(boundPoint, new Size(BOX_HALF_WIDTH * 2, BOX_HALF_HEIGHT * 2));
                 return;
             }
+
+            var firstChild = Children.First();
+            var lastChild = Children.Last();
             
+            if (IsTwig)
+            {
+                var y_offset = ymin;
+                foreach (var child in Children)
+                {
+                    child.ArrangeSubtree(xmin + TWIG_OFFSET, y_offset + Y_SPACING);
+                    y_offset += Y_SPACING;
+                }
+                
+                Center = new Point(xmin + BOX_HALF_WIDTH, ymin + BOX_HALF_HEIGHT);
+                SubtreeBounds = new Rect(boundPoint,
+                    new Size(
+                        TWIG_OFFSET + BOX_HALF_WIDTH * 2,
+                        lastChild.SubtreeBounds.Bottom - ymin
+                    )
+                );
+                return;
+            }
+
             var x_offset = xmin;
             foreach (var child in Children)
             {
@@ -114,17 +142,14 @@ namespace nary_node5
                 x_offset = child.SubtreeBounds.Right + X_SPACING;
             }
 
-            var LeftChild = Children.First();
-            var RightChild = Children.Last();
-            
             Center = new Point(
-                (LeftChild.Center.X + RightChild.Center.X) / 2,
-                ymin + NODE_RADIUS
+                (firstChild.Center.X + lastChild.Center.X) / 2,
+                ymin + BOX_HALF_HEIGHT
             );
             SubtreeBounds = new Rect(boundPoint,
                 new Size(
-                    RightChild.SubtreeBounds.Right - LeftChild.SubtreeBounds.Left,
-                    Math.Max(LeftChild.SubtreeBounds.Height, RightChild.SubtreeBounds.Height) + Y_SPACING
+                    lastChild.SubtreeBounds.Right - firstChild.SubtreeBounds.Left,
+                    Math.Max(firstChild.SubtreeBounds.Height, lastChild.SubtreeBounds.Height) + Y_SPACING
                 )
             );
         }
@@ -133,55 +158,68 @@ namespace nary_node5
         {
             if (Children.Count == 0) return;
             
-            canvas.DrawLine(Center, Center.Move(y: Y_SPACING / 2), Brushes.Black, 1);
+            var firstChild = Children.First();
+            var lastChild = Children.Last();
+            
+            if (IsTwig)
+            {
+                var x = Center.X - BOX_HALF_WIDTH + TWIG_OFFSET / 2;
+                DrawLine(Center, new Point(x, Center.Y));
+                DrawLine(new Point(x, Center.Y), new Point(x, lastChild.Center.Y));
+                foreach (var child in Children) 
+                    DrawLine(new Point(x, child.Center.Y), child.Center);
+                return;
+            }
+            
+            DrawLine(Center, Center.Move(y: Y_SPACING / 2));
             if (Children.Count > 1)
             {
-                canvas.DrawLine(
-                    Children.First().Center.Move(y: -Y_SPACING / 2), 
-                    Children.Last().Center.Move(y: -Y_SPACING / 2), 
-                    Brushes.Black, 1);
+                DrawLine(
+                    firstChild.Center.Move(y: -Y_SPACING / 2), 
+                    lastChild.Center.Move(y: -Y_SPACING / 2));
             }
             foreach (var child in Children)
             {
-                canvas.DrawLine(child.Center, child.Center.Move(y: -Y_SPACING / 2), Brushes.Black, 1);
+                DrawLine(child.Center, child.Center.Move(y: -Y_SPACING / 2));
                 child.DrawSubtreeLinks(canvas);
+            }
+
+            return;
+
+            void DrawLine(Point p1, Point p2)
+            {
+                canvas.DrawLine(p1, p2, Brushes.Green, 1);
             }
         }
 
         private void DrawSubtreeNodes(Canvas canvas)
         {
-            canvas.DrawEllipse(
-                new Rect(Center.X - NODE_RADIUS, Center.Y - NODE_RADIUS, NODE_RADIUS * 2, NODE_RADIUS * 2),
-                Brushes.White,
-                Brushes.Green,
-                2);
-            var label = canvas.DrawLabel(GetLabelBound(), Value, Brushes.Transparent, Brushes.Red, HorizontalAlignment.Center, VerticalAlignment.Center, FONT_SIZE, 0);
+            var backgroundBrush = IsLeaf ? Brushes.White : Brushes.Pink;
+            canvas.DrawRectangle(
+                new Rect(Center.X - BOX_HALF_WIDTH, Center.Y - BOX_HALF_HEIGHT, BOX_HALF_WIDTH * 2, BOX_HALF_HEIGHT * 2),
+                backgroundBrush,
+                Brushes.Black,
+                1);
+
+            var labelText = Value.ToString();
+            if (labelText.Length > 10)
+                labelText = string.Join(Environment.NewLine, Value.ToString().Split(' '));
+            var label = canvas.DrawLabel(GetLabelBound(), labelText, Brushes.Transparent, Brushes.Red, HorizontalAlignment.Center, VerticalAlignment.Center, FONT_SIZE, 0);
             label.FontWeight = FontWeights.Bold;
             
             // draw boundary
-            canvas.DrawRectangle(SubtreeBounds, Brushes.Transparent, Brushes.Red, 1);
+            //canvas.DrawRectangle(SubtreeBounds, Brushes.Transparent, Brushes.Blue, 1);
             
             foreach (var child in Children) child.DrawSubtreeNodes(canvas);
         }
         
         private Rect GetLabelBound()
         {
-            var label = new Label();
-            
-            var formattedText = new FormattedText(
-                Value?.ToString(),
-                CultureInfo.CurrentCulture,
-                label.FlowDirection,
-                new Typeface(label.FontFamily, label.FontStyle, label.FontWeight, label.FontStretch),
-                FONT_SIZE,
-                Brushes.Black,
-                VisualTreeHelper.GetDpi(new DrawingVisual()).PixelsPerDip
-            );
             return new Rect(
-                Center.X - formattedText.Width / 2, 
-                Center.Y - formattedText.Height / 2, 
-                formattedText.Width, 
-                formattedText.Height);
+                Center.X - BOX_HALF_WIDTH, 
+                Center.Y - BOX_HALF_HEIGHT, 
+                BOX_HALF_WIDTH * 2, 
+                BOX_HALF_HEIGHT * 2);
         }
     }
 }
