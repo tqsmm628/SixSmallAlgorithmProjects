@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nary_node5", "nary_node5_wp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sorted_binary_node1", "sorted_binary_node1_wpf\sorted_binary_node1.csproj", "{DBE59F58-6998-40BC-A970-C134A05EF480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkClasses", "NetworkClasses\NetworkClasses.csproj", "{DDB83533-5361-431B-99EB-E02D6F837DDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkClasses", "NetworkClasses\NetworkClasses.csproj", "{DDB83533-5361-431B-99EB-E02D6F837DDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "draw_network", "draw_network_wpf\draw_network.csproj", "{5C966AAD-FC42-476D-978A-05A780F4064C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{DDB83533-5361-431B-99EB-E02D6F837DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDB83533-5361-431B-99EB-E02D6F837DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDB83533-5361-431B-99EB-E02D6F837DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C966AAD-FC42-476D-978A-05A780F4064C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C966AAD-FC42-476D-978A-05A780F4064C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C966AAD-FC42-476D-978A-05A780F4064C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C966AAD-FC42-476D-978A-05A780F4064C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,13 @@
-using System.Windows;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
-namespace NetworkClasses;
+namespace draw_network;
 
 public class Network
 {
@@ -87,5 +93,40 @@ public class Network
     {
         var text = File.ReadAllText(filePath);
         Deserialize(text);
+    }
+
+    private Rect GetBounds()
+    {
+        if (Nodes.Count == 0) return new Rect(0, 0, 0, 0);
+        var maxX = Nodes[0].Center.X;
+        var maxY = Nodes[0].Center.Y;
+        foreach (var node in Nodes.Skip(1))
+        {
+            maxX = Math.Max(maxX, node.Center.X);
+            maxY = Math.Max(maxY, node.Center.Y);
+        }
+        return new Rect(0, 0, maxX, maxY);
+    }
+
+
+    public void Draw(Canvas canvas)
+    {
+        var bound = GetBounds();
+        canvas.Width = bound.Width;
+        canvas.Height = bound.Height;
+        foreach (var link in Links)
+        {
+            link.Draw(canvas);
+        }
+        
+        foreach (var link in Links)
+        {
+            link.DrawLabel(canvas);
+        }
+
+        foreach (var node in Nodes)
+        {
+            node.Draw(canvas);
+        }
     }
 }

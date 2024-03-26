@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Point = System.Drawing.Point;
+using Point = System.Windows.Point;
 
 namespace NetworkClasses;
 
