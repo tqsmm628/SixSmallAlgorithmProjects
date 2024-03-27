@@ -4,15 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace draw_network;
 
 public class Network
 {
-    public List<Node> Nodes = [];
-    public List<Link> Links = [];
+    public List<Node> Nodes { get; private set; } = [];
+    public List<Link> Links { get; private set; } = [];
+    private bool drawLabels => Nodes.Count < 100;
+    
 
     public void Clear()
     {
@@ -72,8 +72,8 @@ public class Network
         for (var i = 0; i < numNodes; i++)
         {
             var nodeData = ReadNextLine(reader)!.Split(',');
-            var x = int.Parse(nodeData[0]);
-            var y = int.Parse(nodeData[1]);
+            var x = double.Parse(nodeData[0]);
+            var y = double.Parse(nodeData[1]);
             var nodeText = nodeData[2];
             var node = new Node(this, new Point(x, y), nodeText);
             AddNode(node);
@@ -118,15 +118,16 @@ public class Network
         {
             link.Draw(canvas);
         }
-        
-        foreach (var link in Links)
-        {
-            link.DrawLabel(canvas);
-        }
+
+        if (drawLabels)
+            foreach (var link in Links)
+            {
+                link.DrawLabel(canvas);
+            }
 
         foreach (var node in Nodes)
         {
-            node.Draw(canvas);
+            node.Draw(canvas, drawLabels);
         }
     }
 }

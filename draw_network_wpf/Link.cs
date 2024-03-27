@@ -36,6 +36,6 @@ public class Link(Network network, Node fromNode, Node toNode, int cost)
         canvas.DrawEllipse(labelBound, Brushes.White, default, default);
         canvas.DrawString(Cost.ToString(),
             radius * 2, radius * 2, 
-            labelCenter, angle, 14, Brushes.Black);
+            labelCenter, angle, 11, Brushes.Black);
     }
 }
