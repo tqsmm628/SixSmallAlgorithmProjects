@@ -45,7 +45,6 @@ namespace draw_network
 
         private void DrawNetwork()
         {
-            mainCanvas.Children.Clear();
             MyNetwork.Draw(mainCanvas);
         }
 

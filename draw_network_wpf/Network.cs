@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace draw_network;
 
@@ -84,7 +86,10 @@ public class Network
             var fromNodeIndex = int.Parse(linkData[0]);
             var toNodeIndex = int.Parse(linkData[1]);
             var cost = int.Parse(linkData[2]);
-            var link = new Link(this, Nodes[fromNodeIndex], Nodes[toNodeIndex], cost);
+            var sourceNode = Nodes[fromNodeIndex];
+            var destNode = Nodes[toNodeIndex];
+            var link = new Link(this, sourceNode, destNode, cost);
+            sourceNode.AddLink(link);
             AddLink(link);
         }
     }
@@ -108,9 +113,10 @@ public class Network
         return new Rect(0, 0, maxX, maxY);
     }
 
-
     public void Draw(Canvas canvas)
     {
+        canvas.Children.Clear();
+
         var bound = GetBounds();
         canvas.Width = bound.Width;
         canvas.Height = bound.Height;
@@ -129,5 +135,22 @@ public class Network
         {
             node.Draw(canvas, drawLabels);
         }
+    }
+
+    public Node? StartNode { get; set; }
+    public Node? EndNode { get; set; }
+
+    public void ellipse_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        var ellipse = (Ellipse)sender;
+        var node = (Node)ellipse.Tag;
+        node.NodeClicked(e);
+    }
+
+    public void label_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        var label = (Label)sender;
+        var node = (Node)label.Tag;
+        node.NodeClicked(e);
     }
 }

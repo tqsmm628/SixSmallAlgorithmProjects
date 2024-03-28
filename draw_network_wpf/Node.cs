@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace draw_network;
 
@@ -20,19 +22,104 @@ public class Node(Network network, Point center, string text)
     public override string ToString() => $"[{Text}]";
     public void AddLink(Link link) => Links.Add(link);
 
+    public Ellipse? MyEllipse { get; set; }
+    public Label? MyLabel { get; set; }
+
     public void Draw(Canvas canvas, bool drawLabels)
     {
         var radius = drawLabels ? LARGE_RADIUS : SMALL_RADIUS;
         var bound = new Rect(Center.X - radius, Center.Y - radius, radius * 2, radius * 2);
-        canvas.DrawEllipse(bound, 
+        MyEllipse = canvas.DrawEllipse(bound, 
             Brushes.White,
             Brushes.Black, 1);
+        MyEllipse.Tag = this;
+        MyEllipse.MouseDown += network.ellipse_MouseDown;
 
         if (drawLabels)
         {
-            canvas.DrawString(Text,
+            MyLabel = canvas.DrawString(Text,
                 radius * 2, radius * 2,
                 Center, 0, 10, Brushes.Blue);
+            MyLabel.Tag = this;
+            MyLabel.MouseDown += network.label_MouseDown;
+        }
+    }
+
+    private bool isStartNode;
+    public bool IsStartNode
+    {
+        get => isStartNode;
+        set
+        {
+            isStartNode = value;
+            SetNodeAppearance();
+        }
+    }
+
+    private bool isEndNode;
+    public bool IsEndNode
+    {
+        get => isEndNode;
+        set
+        {
+            isEndNode = value;
+            SetNodeAppearance();
+        }
+    }
+
+    private void SetNodeAppearance()
+    {
+        if (MyEllipse is null) return;
+
+        if (IsStartNode)
+        {
+            MyEllipse.Fill = Brushes.Pink;
+            MyEllipse.Stroke = Brushes.Red;
+            MyEllipse.StrokeThickness = 2;
+        }
+        else if (IsEndNode)
+        {
+            MyEllipse.Fill = Brushes.LightGreen;
+            MyEllipse.Stroke = Brushes.Green;
+            MyEllipse.StrokeThickness = 2;
+        }
+        else
+        {
+            MyEllipse.Fill = Brushes.White;
+            MyEllipse.Stroke = Brushes.Black;
+            MyEllipse.StrokeThickness = 1;
+        }
+    }
+
+    public void NodeClicked(MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            if (network.StartNode is not null)
+            {
+                foreach (var link in network.StartNode.Links) 
+                    link.IsInTree = false;
+
+                network.StartNode.IsStartNode = false;
+            }
+
+            IsStartNode = true;
+            foreach (var link in Links) link.IsInTree = true;
+            network.StartNode = this;
+        }
+        else if (e.RightButton == MouseButtonState.Pressed)
+        {
+            if (network.EndNode is not null)
+            {
+                foreach (var link in network.EndNode.Links) 
+                    link.IsInPath = false;
+
+                network.EndNode.IsEndNode = false;
+            }
+
+            IsEndNode = true;
+            foreach (var link in Links) link.IsInPath = true;
+            network.EndNode = this;
         }
     }
 }
