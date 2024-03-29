@@ -18,6 +18,16 @@
             </MenuItem>
         </Menu>
 
+        <ToolBar DockPanel.Dock="Top" Height="30">
+            <Label>Algorithms: </Label>
+            <ComboBox Name="algorithmComboBox"
+                      SelectedIndex="1" Width="120"
+                      SelectionChanged="algorithmComboBox_SelectionChanged">
+                <ComboBoxItem>Label Setting</ComboBoxItem>
+                <ComboBoxItem>Label Correcting</ComboBoxItem>
+            </ComboBox>
+        </ToolBar>
+
         <Border BorderBrush="Black" BorderThickness="1" Margin="3">
             <ScrollViewer
                 HorizontalScrollBarVisibility="Auto"

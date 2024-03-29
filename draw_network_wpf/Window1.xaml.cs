@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 
@@ -59,7 +60,7 @@ namespace draw_network
             double height = 400;
             Width = width + 70;
             Height = height + 130;
-            MyNetwork.ReadFromFile("grid(10x15).net");
+            MyNetwork.ReadFromFile("grid(20x30).net");
             MyNetwork.Draw(mainCanvas);
         }
 
@@ -109,8 +110,22 @@ namespace draw_network
 
         private void Make_Test_Networks_OnClicked(object sender, RoutedEventArgs e)
         {
-            BuildGridNetwork("grid(6x10).net", 600, 400, 6, 10);
-            BuildGridNetwork("grid(10x15).net", 600, 400, 10, 15);
+            //BuildGridNetwork("grid(6x10).net", 600, 400, 6, 10);
+            //BuildGridNetwork("grid(10x15).net", 600, 400, 10, 15);
+            //BuildGridNetwork("grid(20x30).net", 600, 400, 20, 30);
+        }
+
+        private void algorithmComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox { SelectedIndex: >= 0 } comboBox)
+            {
+                MyNetwork.AlgorithmType = comboBox.SelectedIndex switch
+                {
+                    0 => AlgorithmTypes.LabelSetting,
+                    1 => AlgorithmTypes.LabelCorrecting,
+                    _ => throw new NotSupportedException()
+                };
+            }
         }
     }
 }

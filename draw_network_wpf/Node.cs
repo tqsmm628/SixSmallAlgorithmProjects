@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -10,10 +9,14 @@ namespace draw_network;
 public class Node(Network network, Point center, string text)
 {
     public int Index { get; set; } = -1;
-    public Network Network { get; set; } = network;
+    //public Network Network { get; set; } = network;
     public Point Center { get; set; } = center;
     public string Text { get; set; } = text;
-    private readonly List<Link> Links = [];
+    public readonly List<Link> Links = [];
+    public int TotalCost { get; set; }
+    public bool IsInPath { get; set; }
+    public Link? ShortestPathLink { get; set; }
+    public bool Visited { get; set; }
 
     private const double 
         LARGE_RADIUS = 10,
@@ -88,38 +91,6 @@ public class Node(Network network, Point center, string text)
             MyEllipse.Fill = Brushes.White;
             MyEllipse.Stroke = Brushes.Black;
             MyEllipse.StrokeThickness = 1;
-        }
-    }
-
-    public void NodeClicked(MouseButtonEventArgs e)
-    {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            if (network.StartNode is not null)
-            {
-                foreach (var link in network.StartNode.Links) 
-                    link.IsInTree = false;
-
-                network.StartNode.IsStartNode = false;
-            }
-
-            IsStartNode = true;
-            foreach (var link in Links) link.IsInTree = true;
-            network.StartNode = this;
-        }
-        else if (e.RightButton == MouseButtonState.Pressed)
-        {
-            if (network.EndNode is not null)
-            {
-                foreach (var link in network.EndNode.Links) 
-                    link.IsInPath = false;
-
-                network.EndNode.IsEndNode = false;
-            }
-
-            IsEndNode = true;
-            foreach (var link in Links) link.IsInPath = true;
-            network.EndNode = this;
         }
     }
 }
